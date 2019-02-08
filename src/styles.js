@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components/macro'
 export const colors = {
   light: '#ffffff',
   grey: '#666666',
-  background: '#111111',
+  background: '#222222',
   green: '#2ecc40',
   red: '#ff4136',
   yellow: '#ffdc00'
@@ -45,6 +45,9 @@ export const StyledApp = styled.div`
 export const StyledStopwatch = styled.div`
   width: 20rem;
   height: 20rem;
+  padding: 2rem;
+  border: solid 0.1rem;
+  border-radius: 50%;
   display: grid;
   justify-items: center;
   align-items: center;

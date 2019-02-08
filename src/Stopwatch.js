@@ -10,6 +10,7 @@ import {
   Stop,
   Clear
 } from './styles'
+import pop from './assets/pop.mp3'
 
 class Stopwatch extends Component {
   state = {
@@ -24,17 +25,20 @@ class Stopwatch extends Component {
     !this.state.running ? this.start() : this.stop()
   }
 
-  start() {
+  start = () => {
     this.timer = setInterval(() => {
       this.setState({
         time: Date.now() - this.now
       })
-    }, 1)
+      const soundInterval = Math.floor(this.state.time / 10)
+      !(soundInterval % 1000) && this.playSound()
+    }, 10)
 
     this.now = Date.now() - this.state.time
     this.setState({ running: true })
   }
-  stop() {
+
+  stop = () => {
     clearInterval(this.timer)
     this.timer = null
     this.setState({ running: false })
@@ -44,6 +48,11 @@ class Stopwatch extends Component {
     this.stop()
     this.now = 0
     this.setState({ time: 0 })
+  }
+
+  playSound = () => {
+    const sound = new Audio(pop)
+    sound.play()
   }
 
   hundreths = milliseconds => {
