@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { GlobalStyle, StyledApp } from './styles'
 import Stopwatch from './Stopwatch'
+import Timer from './Timer'
 
 class App extends Component {
   render() {
@@ -8,6 +9,7 @@ class App extends Component {
       <StyledApp>
         <GlobalStyle />
         <Stopwatch />
+        <Timer />
       </StyledApp>
     )
   }

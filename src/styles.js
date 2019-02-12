@@ -24,7 +24,6 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: ${colors.light};
-    user-select: none;
   }
   button:focus {
     outline: none;
@@ -38,11 +37,15 @@ export const StyledApp = styled.div`
   display: grid;
   width: 100vw;
   height: 100vh;
-  justify-content: center;
-  align-content: center;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
 `
 
+// stopwatch
 export const StyledStopwatch = styled.div`
+  grid-area: 1 / 1 / 3 / 2;
   width: 20rem;
   height: 20rem;
   padding: 2rem;
@@ -138,4 +141,64 @@ export const Clear = styled.div`
   :hover {
     font-size: 2.2rem;
   }
+`
+
+//timer
+export const StyledTimer = styled(StyledStopwatch)`
+  grid-area: 1 / 2 / 3 / 3;
+`
+
+export const TimerHours = styled.div`
+  grid-column: 1 / 2;
+  font-size: 4rem;
+`
+
+export const TimerMinutes = styled.div`
+  grid-column: 2 / 3;
+  font-size: 5rem;
+`
+
+export const TimerSeconds = styled.div`
+  grid-column: 3 / 4;
+  font-size: 4rem;
+`
+
+export const TimerInputField = styled.div`
+  grid-area: 2 / 1 / 3 / 3;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  grid-template-columns: 1fr 1fr 1fr;
+  font-weight: normal;
+`
+
+export const HoursInput = styled.input`
+  width: 6rem;
+  grid-column: 1 / 2;
+  font-size: 4rem;
+  text-align: center;
+  border: 0.1rem dotted;
+  background-color: ${colors.background};
+  color: ${colors.light};
+`
+
+export const MinutesInput = styled.input`
+  width: 6rem;
+  grid-column: 2 / 3;
+  font-size: 4rem;
+  text-align: center;
+  border: 0.1rem dotted;
+  background-color: ${colors.background};
+  color: ${colors.light};
+`
+
+export const SecondsInput = styled.input`
+  width: 6rem;
+  grid-column: 3 / 4;
+  font-size: 4rem;
+  text-align: center;
+  border: 0.1rem dotted;
+  background-color: ${colors.background};
+  color: ${colors.light};
 `
