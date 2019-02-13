@@ -26,6 +26,9 @@ class Stopwatch extends Component {
   }
 
   start = () => {
+    this.now = Date.now() - this.state.time
+    this.setState({ running: true })
+
     this.timer = setInterval(() => {
       this.setState({
         time: Date.now() - this.now
@@ -33,9 +36,6 @@ class Stopwatch extends Component {
       const soundInterval = Math.floor(this.state.time / 10)
       !(soundInterval % 1000) && this.playSound()
     }, 10)
-
-    this.now = Date.now() - this.state.time
-    this.setState({ running: true })
   }
 
   stop = () => {

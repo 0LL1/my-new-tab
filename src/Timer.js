@@ -18,8 +18,6 @@ import alarm from './assets/alarm.mp3'
 
 class Stopwatch extends Component {
   state = {
-    hours: 0,
-    minutes: 0,
     seconds: 0,
     running: false
   }
@@ -27,9 +25,24 @@ class Stopwatch extends Component {
   timer = null
   now = 0
 
-  setTime = event => {
+  setSeconds = event => {
+    const secondsToAdd = parseInt(event.target.value)
     this.setState({
-      [event.target.name]: event.target.value
+      seconds: secondsToAdd
+    })
+  }
+
+  setMinutes = event => {
+    const secondsToAdd = event.target.value * 60
+    this.setState({
+      seconds: secondsToAdd
+    })
+  }
+
+  setHours = event => {
+    const secondsToAdd = event.target.value * 3600
+    this.setState({
+      seconds: secondsToAdd
     })
   }
 
@@ -38,17 +51,19 @@ class Stopwatch extends Component {
   }
 
   start = () => {
-    const start = Date.now()
+    this.now = Date.now()
+    const secondsRemaining = this.state.seconds
+    this.setState({ running: true })
 
     this.timer = setInterval(() => {
-      this.setState(prevState => {
-        console.log(
-          this.state.seconds - Math.floor((Date.now() - start) / 1000)
-        )
+      this.setState({
+        seconds: secondsRemaining - Math.floor((Date.now() - this.now) / 1000)
       })
+      if (this.state.seconds <= 0) {
+        this.clear()
+        this.playAlarm()
+      }
     }, 1000)
-
-    this.setState({ running: true })
   }
 
   stop = () => {
@@ -60,7 +75,7 @@ class Stopwatch extends Component {
   clear = () => {
     this.stop()
     this.now = 0
-    this.setState({ hours: 0, minutes: 0, seconds: 0 })
+    this.setState({ seconds: 0 })
   }
 
   playAlarm = () => {
@@ -72,22 +87,41 @@ class Stopwatch extends Component {
     return time.toString().padStart(2, '0')
   }
 
+  seconds = seconds => {
+    return Math.floor((seconds / 1) % 60)
+      .toString()
+      .padStart(2, '0')
+  }
+
+  minutes = seconds => {
+    return Math.floor((seconds / 60) % 60)
+      .toString()
+      .padStart(2, '0')
+  }
+
+  hours = seconds => {
+    return Math.floor((seconds / 3600) % 60)
+      .toString()
+      .padStart(2, '0')
+  }
+
   render() {
     return (
       <StyledTimer>
-        <Title>timer</Title>
+        <Title onClick={this.playAlarm}>timer</Title>
         {this.state.running ? (
           <StyledTime>
-            <TimerHours>{this.zeroPad(this.state.hours)}</TimerHours>
-            <TimerMinutes>{this.zeroPad(this.state.minutes)}</TimerMinutes>
-            <TimerSeconds>{this.zeroPad(this.state.seconds)}</TimerSeconds>
+            <TimerHours>{this.hours(this.state.seconds)}</TimerHours>
+            <TimerMinutes>{this.minutes(this.state.seconds)}</TimerMinutes>
+            <TimerSeconds>{this.seconds(this.state.seconds)}</TimerSeconds>
           </StyledTime>
         ) : (
           <TimerInputField>
             <label>
               hours
               <HoursInput
-                onChange={this.setTime}
+                onChange={this.setHours}
+                value={this.hours(this.state.seconds)}
                 name="hours"
                 maxLength="2"
                 type="number"
@@ -98,7 +132,8 @@ class Stopwatch extends Component {
             <label>
               minutes
               <MinutesInput
-                onChange={this.setTime}
+                onChange={this.setMinutes}
+                value={this.minutes(this.state.seconds)}
                 name="minutes"
                 maxLength="2"
                 type="number"
@@ -109,7 +144,8 @@ class Stopwatch extends Component {
             <label>
               seconds
               <SecondsInput
-                onChange={this.setTime}
+                onChange={this.setSeconds}
+                value={this.seconds(this.state.seconds)}
                 name="seconds"
                 maxLength="2"
                 type="number"
