@@ -56,10 +56,10 @@ class Stopwatch extends Component {
       })
 
       if (
-        calculatedSeconds === 0 ||
-        (this.state.hours === 0 &&
-          this.state.minutes === 0 &&
-          this.state.seconds === 0)
+        calculatedSeconds <= 0 ||
+        (this.state.hours <= 0 &&
+          this.state.minutes <= 0 &&
+          this.state.seconds <= 0)
       ) {
         this.clear()
         this.playAlarm()
@@ -106,7 +106,6 @@ class Stopwatch extends Component {
                 onChange={this.setTime}
                 value={this.zeroPad(this.state.hours)}
                 name="hours"
-                maxLength="2"
                 type="number"
                 min="0"
                 max="24"
@@ -118,7 +117,6 @@ class Stopwatch extends Component {
                 onChange={this.setTime}
                 value={this.zeroPad(this.state.minutes)}
                 name="minutes"
-                maxLength="2"
                 type="number"
                 min="0"
                 max="59"
@@ -130,7 +128,6 @@ class Stopwatch extends Component {
                 onChange={this.setTime}
                 value={this.zeroPad(this.state.seconds)}
                 name="seconds"
-                maxLength="2"
                 type="number"
                 min="0"
                 max="59"
