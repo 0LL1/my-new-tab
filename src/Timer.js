@@ -91,7 +91,7 @@ class Stopwatch extends Component {
   render() {
     return (
       <StyledTimer>
-        <Title onClick={this.playAlarm}>timer</Title>
+        <Title>timer</Title>
         {this.state.running ? (
           <StyledTime>
             <TimerHours>{this.zeroPad(this.state.hours)}</TimerHours>
@@ -104,6 +104,7 @@ class Stopwatch extends Component {
               hours
               <HoursInput
                 onChange={this.setTime}
+                onKeyDown={e => e.key === 'Enter' && this.start()}
                 value={this.zeroPad(this.state.hours)}
                 name="hours"
                 type="number"
@@ -115,6 +116,7 @@ class Stopwatch extends Component {
               minutes
               <MinutesInput
                 onChange={this.setTime}
+                onKeyDown={e => e.key === 'Enter' && this.start()}
                 value={this.zeroPad(this.state.minutes)}
                 name="minutes"
                 type="number"
@@ -126,6 +128,7 @@ class Stopwatch extends Component {
               seconds
               <SecondsInput
                 onChange={this.setTime}
+                onKeyDown={e => e.key === 'Enter' && this.start()}
                 value={this.zeroPad(this.state.seconds)}
                 name="seconds"
                 type="number"
