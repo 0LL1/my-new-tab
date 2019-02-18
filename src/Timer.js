@@ -55,6 +55,10 @@ class Stopwatch extends Component {
         seconds: secondsRemaining % 60
       })
 
+      document.title = `${this.zeroPad(this.state.hours)}:${this.zeroPad(
+        this.state.minutes
+      )}:${this.zeroPad(this.state.seconds)}`
+
       if (
         calculatedSeconds <= 0 ||
         (this.state.hours <= 0 &&
@@ -77,6 +81,7 @@ class Stopwatch extends Component {
     this.stop()
     this.now = 0
     this.setState({ hours: 0, minutes: 0, seconds: 0 })
+    document.title = 'My New Tab'
   }
 
   playAlarm = () => {
