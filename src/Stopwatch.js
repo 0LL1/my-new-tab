@@ -74,15 +74,17 @@ class Stopwatch extends Component {
   }
 
   render() {
+    const { time, running } = this.state
+
     return (
       <StyledStopwatch>
         <Title>stopwatch</Title>
         <StyledTime>
-          <Minutes>{this.minutes(this.state.time)}</Minutes>
-          <Seconds>{this.seconds(this.state.time)}</Seconds>
-          <Hundreths>{this.hundreths(this.state.time)}</Hundreths>
+          <Minutes>{this.minutes(time)}</Minutes>
+          <Seconds>{this.seconds(time)}</Seconds>
+          <Hundreths>{this.hundreths(time)}</Hundreths>
         </StyledTime>
-        {!this.state.running ? (
+        {!running ? (
           <Start onClick={this.toggleRunning}>start</Start>
         ) : (
           <Stop onClick={this.toggleRunning}>stop</Stop>

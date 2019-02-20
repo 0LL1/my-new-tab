@@ -94,14 +94,16 @@ class Stopwatch extends Component {
   }
 
   render() {
+    const { hours, minutes, seconds, running } = this.state
+
     return (
       <StyledTimer>
         <Title>timer</Title>
-        {this.state.running ? (
+        {running ? (
           <StyledTime>
-            <TimerHours>{this.zeroPad(this.state.hours)}</TimerHours>
-            <TimerMinutes>{this.zeroPad(this.state.minutes)}</TimerMinutes>
-            <TimerSeconds>{this.zeroPad(this.state.seconds)}</TimerSeconds>
+            <TimerHours>{this.zeroPad(hours)}</TimerHours>
+            <TimerMinutes>{this.zeroPad(minutes)}</TimerMinutes>
+            <TimerSeconds>{this.zeroPad(seconds)}</TimerSeconds>
           </StyledTime>
         ) : (
           <TimerInputField>
@@ -110,7 +112,7 @@ class Stopwatch extends Component {
               <HoursInput
                 onChange={this.setTime}
                 onKeyDown={e => e.key === 'Enter' && this.start()}
-                value={this.zeroPad(this.state.hours)}
+                value={this.zeroPad(hours)}
                 name="hours"
                 type="number"
                 min="0"
@@ -122,7 +124,7 @@ class Stopwatch extends Component {
               <MinutesInput
                 onChange={this.setTime}
                 onKeyDown={e => e.key === 'Enter' && this.start()}
-                value={this.zeroPad(this.state.minutes)}
+                value={this.zeroPad(minutes)}
                 name="minutes"
                 type="number"
                 min="0"
@@ -134,7 +136,7 @@ class Stopwatch extends Component {
               <SecondsInput
                 onChange={this.setTime}
                 onKeyDown={e => e.key === 'Enter' && this.start()}
-                value={this.zeroPad(this.state.seconds)}
+                value={this.zeroPad(seconds)}
                 name="seconds"
                 type="number"
                 min="0"
@@ -143,7 +145,7 @@ class Stopwatch extends Component {
             </label>
           </TimerInputField>
         )}
-        {!this.state.running ? (
+        {!running ? (
           <Start onClick={this.toggleRunning}>start</Start>
         ) : (
           <Stop onClick={this.toggleRunning}>stop</Stop>
