@@ -43,9 +43,9 @@ export const StyledApp = styled.div`
   grid-template-rows: 1fr 1fr;
 `
 
-// stopwatch
+// Stopwatch
 export const StyledStopwatch = styled.div`
-  grid-area: 1 / 1 / 3 / 2;
+  grid-area: 1 / 2 / 2 / 3;
   width: 20rem;
   height: 20rem;
   padding: 2rem;
@@ -143,9 +143,9 @@ export const Clear = styled.div`
   }
 `
 
-//timer
+//Timer
 export const StyledTimer = styled(StyledStopwatch)`
-  grid-area: 1 / 2 / 3 / 3;
+  grid-area: 2 / 2 / 3 / 3;
 `
 
 export const TimerHours = styled.div`
@@ -199,6 +199,19 @@ export const SecondsInput = styled.input`
   font-size: 4rem;
   text-align: center;
   border: 0.1rem dotted;
+  background-color: ${colors.background};
+  color: ${colors.light};
+`
+
+//Barca
+export const StyledBarca = styled.div`
+  grid-area: 1 / 1 / 3 / 2;
+  width: 30rem;
+  height: 50rem;
+  border: solid 0.1rem;
+  display: grid;
+  justify-items: center;
+  align-items: center;
   background-color: ${colors.background};
   color: ${colors.light};
 `
