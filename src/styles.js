@@ -5,8 +5,10 @@ export const colors = {
   grey: '#666666',
   background: '#222222',
   green: '#2ecc40',
-  red: '#ff4136',
-  yellow: '#ffdc00'
+  red: '#db0030',
+  yellow: '#ffed02',
+  blau: '#004d98',
+  grana: '#a50044'
 }
 
 export const GlobalStyle = createGlobalStyle`
@@ -28,9 +30,6 @@ export const GlobalStyle = createGlobalStyle`
   button:focus {
     outline: none;
   }
-  .icon {
-    vertical-align: middle;
-  }
 `
 
 export const StyledApp = styled.div`
@@ -46,8 +45,8 @@ export const StyledApp = styled.div`
 // Stopwatch
 export const StyledStopwatch = styled.div`
   grid-area: 1 / 2 / 2 / 3;
-  width: 20rem;
-  height: 20rem;
+  width: 16rem;
+  height: 16rem;
   padding: 2rem;
   border: solid 0.1rem;
   border-radius: 50%;
@@ -57,26 +56,11 @@ export const StyledStopwatch = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   text-align: center;
-  button {
-    grid-area: 3 / 1 / 4 / 2;
-    font-size: 2rem;
-    font-weight: normal;
-    background-color: ${colors.background};
-    color: ${colors.light};
-    border: none;
-    transition: all 0.175s ease-in-out;
-    :last-child {
-      grid-area: 3 / 2 / 4 / 3;
-    }
-    :hover {
-      font-size: 2.2rem;
-    }
-  }
 `
 
 export const Title = styled.div`
   grid-area: 1 / 1 / 2 / 3;
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: normal;
   color: ${colors.grey};
 `
@@ -92,23 +76,22 @@ export const StyledTime = styled.div`
 
 export const Minutes = styled.div`
   grid-column: 1 / 2;
-  font-size: 4rem;
+  font-size: 3rem;
 `
 
 export const Seconds = styled.div`
   grid-column: 2 / 3;
-  font-size: 5rem;
+  font-size: 4rem;
 `
 
 export const Hundreths = styled.div`
   grid-column: 3 / 4;
-  font-size: 4rem;
+  font-size: 3rem;
 `
 export const Start = styled.div`
   grid-area: 3 / 1 / 4 / 2;
   font-size: 2rem;
   font-weight: normal;
-  background-color: ${colors.background};
   color: ${colors.green};
   border: none;
   transition: all 0.175s ease-in-out;
@@ -121,7 +104,6 @@ export const Stop = styled.div`
   grid-area: 3 / 1 / 4 / 2;
   font-size: 2rem;
   font-weight: normal;
-  background-color: ${colors.background};
   color: ${colors.red};
   border: none;
   transition: all 0.175s ease-in-out;
@@ -150,17 +132,17 @@ export const StyledTimer = styled(StyledStopwatch)`
 
 export const TimerHours = styled.div`
   grid-column: 1 / 2;
-  font-size: 4rem;
+  font-size: 3rem;
 `
 
 export const TimerMinutes = styled.div`
   grid-column: 2 / 3;
-  font-size: 5rem;
+  font-size: 4rem;
 `
 
 export const TimerSeconds = styled.div`
   grid-column: 3 / 4;
-  font-size: 4rem;
+  font-size: 3rem;
 `
 
 export const TimerInputField = styled.div`
@@ -174,9 +156,9 @@ export const TimerInputField = styled.div`
 `
 
 export const HoursInput = styled.input`
-  width: 6rem;
+  width: 5rem;
   grid-column: 1 / 2;
-  font-size: 4rem;
+  font-size: 3rem;
   text-align: center;
   border: 0.1rem dotted;
   background-color: ${colors.background};
@@ -184,9 +166,9 @@ export const HoursInput = styled.input`
 `
 
 export const MinutesInput = styled.input`
-  width: 6rem;
+  width: 5rem;
   grid-column: 2 / 3;
-  font-size: 4rem;
+  font-size: 3rem;
   text-align: center;
   border: 0.1rem dotted;
   background-color: ${colors.background};
@@ -194,9 +176,9 @@ export const MinutesInput = styled.input`
 `
 
 export const SecondsInput = styled.input`
-  width: 6rem;
+  width: 5rem;
   grid-column: 3 / 4;
-  font-size: 4rem;
+  font-size: 3rem;
   text-align: center;
   border: 0.1rem dotted;
   background-color: ${colors.background};
@@ -205,13 +187,76 @@ export const SecondsInput = styled.input`
 
 //Barca
 export const StyledBarca = styled.div`
-  grid-area: 1 / 1 / 3 / 2;
-  width: 30rem;
-  height: 50rem;
+  grid-area: 2 / 1 / 3 / 2;
+  height: 20rem;
+  width: 32rem;
+  padding: 0;
   border: solid 0.1rem;
   display: grid;
   justify-items: center;
   align-items: center;
-  background-color: ${colors.background};
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  text-align: center;
+`
+
+export const HomeTeam = styled.div`
+  grid-area: 2 / 1 / 3 / 2;
   color: ${colors.light};
+  font-size: 2rem;
+`
+
+export const AwayTeam = styled.div`
+  grid-area: 2 / 2 / 3 / 3;
+  color: ${colors.light};
+  font-size: 2rem;
+`
+
+export const Competition = styled.div`
+  grid-area: 3 / 1 / 4 / 2;
+  font-size: 1.5rem;
+  color: ${colors.blau};
+`
+
+export const Time = styled.div`
+  grid-area: 3 / 2 / 4 / 3;
+  font-size: 1.5rem;
+  color: ${colors.blau};
+`
+
+export const Next = styled.div`
+  grid-area: 4 / 2 / 5 / 3;
+  font-size: 2rem;
+  font-weight: normal;
+  color: ${colors.grana};
+  border: none;
+  transition: all 0.175s ease-in-out;
+  :hover {
+    font-size: 2.2rem;
+  }
+`
+
+export const Prev = styled.div`
+  grid-area: 4 / 1 / 5 / 2;
+  font-size: 2rem;
+  font-weight: normal;
+  color: ${colors.grana};
+  border: none;
+  transition: all 0.175s ease-in-out;
+  :hover {
+    font-size: 2.2rem;
+  }
+`
+
+export const Loader = styled.div`
+  grid-area: 2 / 1 / 3 / 2;
+  height: 20rem;
+  width: 32rem;
+  padding: 0;
+  border: solid 0.1rem;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2rem;
 `

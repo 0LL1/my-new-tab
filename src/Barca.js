@@ -1,17 +1,31 @@
 import React, { Component } from 'react'
-import { StyledBarca } from './styles'
 import axios from 'axios'
+import moment from 'moment'
+import {
+  StyledBarca,
+  Title,
+  HomeTeam,
+  AwayTeam,
+  Competition,
+  Time,
+  Next,
+  Prev,
+  Loader
+} from './styles'
 
 class Barca extends Component {
   state = {
-    matchCount: 0,
-    competition: '',
-    homeTeam: '',
-    awayTeam: '',
-    matchTime: ''
+    count: '',
+    matches: [],
+    selected: 0,
+    loading: true
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getData()
+  }
+
+  getData = async () => {
     try {
       const response = await axios.get(
         'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
@@ -21,33 +35,52 @@ class Barca extends Component {
           }
         }
       )
-
-      const Match = await response.data.matches[this.state.matchCount]
-
-      this.setState({
-        competition: Match.competition.name,
-        homeTeam: Match.homeTeam.name,
-        awayTeam: Match.awayTeam.name,
-        matchTime: Match.utcDate
+      await this.setState({
+        count: response.data.count,
+        matches: response.data.matches,
+        loading: false
       })
     } catch (error) {
       console.log('error', error)
     }
   }
 
-  render() {
-    const { homeTeam, awayTeam, matchTime, competition } = this.state
+  nextMatch = () => {
+    if (this.state.count > this.state.selected + 1) {
+      this.setState(prevState => {
+        return { selected: prevState.selected + 1 }
+      })
+    } else return
+  }
 
-    return (
+  previousMatch = () => {
+    if (this.state.selected > 0) {
+      this.setState(prevState => {
+        return { selected: prevState.selected - 1 }
+      })
+    } else return
+  }
+
+  formatTime = time => {
+    return moment(time).format('ddd D.M.YYYY HH:mm')
+  }
+
+  render() {
+    const { matches, selected, loading } = this.state
+    const match = matches[selected]
+
+    return !loading ? (
       <StyledBarca>
-        <div>FC Barcelona's scheduled matches</div>
-        <div>
-          {homeTeam} vs {awayTeam}
-        </div>
-        <div>
-          {competition} at {matchTime}
-        </div>
+        <Title>scheduled matches</Title>
+        <HomeTeam>{match.homeTeam.name}</HomeTeam>
+        <AwayTeam>{match.awayTeam.name}</AwayTeam>
+        <Competition>{match.competition.name}</Competition>
+        <Time>{this.formatTime(match.utcDate)}</Time>
+        <Prev onClick={this.previousMatch}>prev</Prev>
+        <Next onClick={this.nextMatch}>next</Next>
       </StyledBarca>
+    ) : (
+      <Loader>loading...</Loader>
     )
   }
 }
