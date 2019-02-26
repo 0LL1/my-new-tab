@@ -28,7 +28,7 @@ class Barca extends Component {
   getData = async () => {
     try {
       const response = await axios.get(
-        'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
+        'https://thingproxy.freeboard.io/fetch/https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
         {
           headers: {
             'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY
