@@ -126,8 +126,19 @@ export const Clear = styled.div`
 `
 
 //Timer
-export const StyledTimer = styled(StyledStopwatch)`
+export const StyledTimer = styled.div`
   grid-area: 2 / 2 / 3 / 3;
+  width: 16rem;
+  height: 16rem;
+  padding: 2rem;
+  border: solid 0.1rem;
+  border-radius: 50%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  text-align: center;
 `
 
 export const TimerHours = styled.div`

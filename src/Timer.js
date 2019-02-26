@@ -16,7 +16,7 @@ import {
 } from './styles'
 import alarm from './assets/alarm.mp3'
 
-class Stopwatch extends Component {
+class Timer extends Component {
   state = {
     hours: 0,
     minutes: 0,
@@ -156,4 +156,4 @@ class Stopwatch extends Component {
   }
 }
 
-export default Stopwatch
+export default Timer
