@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import moment from 'moment'
 import {
   StyledBarca,
@@ -25,24 +24,23 @@ class Barca extends Component {
     this.getData()
   }
 
-  getData = async () => {
-    try {
-      const response = await axios.get(
-        'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
-        {
-          headers: {
-            'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY
-          }
+  getData = () => {
+    fetch(
+      'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
+      {
+        headers: {
+          'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY
         }
+      }
+    )
+      .then(response => response.json())
+      .then(data =>
+        this.setState({
+          count: data.count,
+          matches: data.matches,
+          loading: false
+        })
       )
-      await this.setState({
-        count: response.data.count,
-        matches: response.data.matches,
-        loading: false
-      })
-    } catch (error) {
-      console.log('error', error)
-    }
   }
 
   nextMatch = () => {
