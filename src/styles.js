@@ -259,7 +259,7 @@ export const Prev = styled.div`
   }
 `
 
-export const Loader = styled.div`
+export const Fallback = styled.div`
   grid-area: 2 / 1 / 3 / 2;
   height: 20rem;
   width: 32rem;

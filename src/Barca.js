@@ -9,15 +9,16 @@ import {
   Time,
   Next,
   Prev,
-  Loader
+  Fallback
 } from './styles'
 
 class Barca extends Component {
   state = {
     count: '',
     matches: [],
-    selected: 0,
-    loading: true
+    index: 0,
+    loading: true,
+    error: false
   }
 
   componentDidMount() {
@@ -28,12 +29,16 @@ class Barca extends Component {
     fetch(
       'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
       {
-        headers: {
-          'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY
-        }
+        headers: { 'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY }
       }
     )
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error()
+        }
+      })
       .then(data =>
         this.setState({
           count: data.count,
@@ -41,20 +46,24 @@ class Barca extends Component {
           loading: false
         })
       )
+      .catch(error => {
+        this.setState({ error: 'Error :(' })
+        console.log(error)
+      })
   }
 
   nextMatch = () => {
-    if (this.state.count > this.state.selected + 1) {
+    if (this.state.count > this.state.index + 1) {
       this.setState(prevState => {
-        return { selected: prevState.selected + 1 }
+        return { index: prevState.index + 1 }
       })
     } else return
   }
 
   previousMatch = () => {
-    if (this.state.selected > 0) {
+    if (this.state.index > 0) {
       this.setState(prevState => {
-        return { selected: prevState.selected - 1 }
+        return { index: prevState.index - 1 }
       })
     } else return
   }
@@ -64,8 +73,8 @@ class Barca extends Component {
   }
 
   render() {
-    const { matches, selected, loading } = this.state
-    const match = matches[selected]
+    const { matches, index, loading, error } = this.state
+    const match = matches[index]
 
     return !loading ? (
       <StyledBarca>
@@ -78,7 +87,7 @@ class Barca extends Component {
         <Next onClick={this.nextMatch}>next</Next>
       </StyledBarca>
     ) : (
-      <Loader>loading...</Loader>
+      <Fallback>{!error ? 'loading...' : error}</Fallback>
     )
   }
 }
