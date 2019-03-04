@@ -88,10 +88,11 @@ export const Hundreths = styled.div`
   grid-column: 3 / 4;
   font-size: 3rem;
 `
-export const Start = styled.div`
+export const Start = styled.button`
   grid-area: 3 / 1 / 4 / 2;
   font-size: 2rem;
   font-weight: normal;
+  background-color: ${colors.background};
   color: ${colors.green};
   border: none;
   transition: all 0.175s ease-in-out;
@@ -100,10 +101,11 @@ export const Start = styled.div`
   }
 `
 
-export const Stop = styled.div`
+export const Stop = styled.button`
   grid-area: 3 / 1 / 4 / 2;
   font-size: 2rem;
   font-weight: normal;
+  background-color: ${colors.background};
   color: ${colors.red};
   border: none;
   transition: all 0.175s ease-in-out;
@@ -112,7 +114,7 @@ export const Stop = styled.div`
   }
 `
 
-export const Clear = styled.div`
+export const Clear = styled.button`
   grid-area: 3 / 2 / 4 / 3;
   font-size: 2rem;
   font-weight: normal;
@@ -235,10 +237,11 @@ export const Time = styled.div`
   color: ${colors.blau};
 `
 
-export const Next = styled.div`
+export const Next = styled.button`
   grid-area: 4 / 2 / 5 / 3;
   font-size: 2rem;
   font-weight: normal;
+  background-color: ${colors.background};
   color: ${colors.grana};
   border: none;
   transition: all 0.175s ease-in-out;
@@ -247,10 +250,11 @@ export const Next = styled.div`
   }
 `
 
-export const Prev = styled.div`
+export const Prev = styled.button`
   grid-area: 4 / 1 / 5 / 2;
   font-size: 2rem;
   font-weight: normal;
+  background-color: ${colors.background};
   color: ${colors.grana};
   border: none;
   transition: all 0.175s ease-in-out;
