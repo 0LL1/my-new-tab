@@ -40,6 +40,11 @@ export const StyledApp = styled.div`
   align-items: center;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+
+  @media (max-width: 850px) {
+    display: flex;
+    flex-direction: column;
+  }
 `
 
 // Stopwatch
@@ -274,4 +279,52 @@ export const Fallback = styled.div`
   align-items: center;
   text-align: center;
   font-size: 2rem;
+`
+
+//MainTask
+export const StyledMainTasks = styled.div`
+  grid-area: 1 / 1 / 2 / 2;
+  height: 20rem;
+  width: 32rem;
+  padding: 0;
+  border: solid 0.1rem;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+`
+
+export const TaskInput = styled.input`
+  grid-row: 2 / 3;
+  width: 30rem;
+  font-size: 2rem;
+  border: 0.1rem dotted;
+  background-color: ${colors.background};
+  color: ${colors.light};
+`
+
+export const TaskList = styled.div`
+  grid-row: 3 / 5;
+  width: 30rem;
+  height: 100%;
+  overflow: scroll;
+`
+
+export const Task = styled.div`
+  font-size: 2rem;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  align-items: center;
+  .icon {
+    grid-column: 1 / 2;
+    color: ${colors.grana};
+    border: none;
+    transition: all 0.175s ease-in-out;
+    :hover {
+      font-size: 2.2rem;
+    }
+  }
 `
