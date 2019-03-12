@@ -9,23 +9,43 @@ class MainTasks extends Component {
     input: ''
   }
 
+  componentDidMount() {
+    const savedTasks = JSON.parse(localStorage.getItem('tasks'))
+    savedTasks && this.setState({ tasks: savedTasks })
+  }
+
   setTask = event => {
     this.setState({ input: event.target.value })
   }
 
   addTask = () => {
-    this.setState(prevState => {
-      return {
-        tasks: [...prevState.tasks, { task: this.state.input, id: uuidv4() }],
-        input: ''
-      }
-    })
+    if (this.state.tasks.length < 3) {
+      this.setState(
+        prevState => {
+          return {
+            tasks: [
+              ...prevState.tasks,
+              { task: this.state.input, id: uuidv4() }
+            ],
+            input: ''
+          }
+        },
+        () => {
+          localStorage.setItem('tasks', JSON.stringify(this.state.tasks))
+        }
+      )
+    } else return
   }
 
   deleteTask = id => {
-    this.setState(prevState => {
-      return { tasks: prevState.tasks.filter(task => task.id !== id) }
-    })
+    this.setState(
+      prevState => {
+        return { tasks: prevState.tasks.filter(task => task.id !== id) }
+      },
+      () => {
+        localStorage.setItem('tasks', JSON.stringify(this.state.tasks))
+      }
+    )
   }
 
   render() {
@@ -45,6 +65,7 @@ class MainTasks extends Component {
           onChange={this.setTask}
           onKeyDown={e => e.key === 'Enter' && this.addTask()}
           value={this.state.input}
+          disabled={this.state.tasks.length >= 3}
         />
         <TaskList>{taskList}</TaskList>
       </StyledMainTasks>
