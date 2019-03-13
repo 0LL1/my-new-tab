@@ -61,12 +61,15 @@ class MainTasks extends Component {
     return (
       <StyledMainTasks>
         <Title>main tasks of today</Title>
-        <TaskInput
-          onChange={this.setTask}
-          onKeyDown={e => e.key === 'Enter' && this.addTask()}
-          value={this.state.input}
-          disabled={this.state.tasks.length >= 3}
-        />
+        <label>
+          {this.state.tasks.length >= 3 ? 'no more tasks!' : 'new task'}
+          <TaskInput
+            onChange={this.setTask}
+            onKeyDown={e => e.key === 'Enter' && this.addTask()}
+            value={this.state.input}
+            hidden={this.state.tasks.length >= 3}
+          />
+        </label>
         <TaskList>{taskList}</TaskList>
       </StyledMainTasks>
     )

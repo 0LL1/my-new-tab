@@ -57,7 +57,6 @@ export const StyledStopwatch = styled.div`
   width: 16rem;
   height: 16rem;
   padding: 2rem;
-  /* border: solid 0.1rem; */
   border-radius: 50%;
   display: grid;
   justify-items: center;
@@ -149,7 +148,6 @@ export const StyledTimer = styled.div`
   width: 16rem;
   height: 16rem;
   padding: 2rem;
-  /* border: solid 0.1rem; */
   border-radius: 50%;
   display: grid;
   justify-items: center;
@@ -222,7 +220,6 @@ export const StyledBarca = styled.div`
   height: 20rem;
   width: 32rem;
   padding: 0;
-  /* border: solid 0.1rem; */
   display: grid;
   justify-items: center;
   align-items: center;
@@ -306,7 +303,6 @@ export const StyledMainTasks = styled.div`
   height: 20rem;
   width: 32rem;
   padding: 0;
-  /* border: solid 0.1rem; */
   display: grid;
   justify-items: center;
   align-items: center;

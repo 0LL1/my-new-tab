@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
   StyledBarca,
   Title,
@@ -69,7 +69,7 @@ class Barca extends Component {
   }
 
   formatTime = time => {
-    return moment(time).format('ddd D.M.YYYY HH:mm')
+    return dayjs(time).format('ddd D.M.YYYY HH:mm')
   }
 
   render() {
