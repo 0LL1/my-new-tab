@@ -150,7 +150,9 @@ class Timer extends Component {
         ) : (
           <Stop onClick={this.toggleRunning}>stop</Stop>
         )}
-        <Clear onClick={this.clear}>clear</Clear>
+        <Clear onClick={this.clear} disabled={!(hours + minutes + seconds)}>
+          clear
+        </Clear>
       </StyledTimer>
     )
   }

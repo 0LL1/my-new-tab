@@ -2,13 +2,17 @@ import styled, { createGlobalStyle } from 'styled-components/macro'
 
 export const colors = {
   light: '#ffffff',
-  grey: '#666666',
-  background: '#222222',
-  green: '#2ecc40',
-  red: '#db0030',
-  yellow: '#ffed02',
-  blau: '#004d98',
-  grana: '#a50044'
+  grey: '#A8ABAF',
+  apps: '#282C30',
+  background: '#323639',
+  green: '#29CF42',
+  red: '#FF564F',
+  yellow: '#FFC12F'
+}
+
+export const vars = {
+  boxShadow:
+    '0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2)'
 }
 
 export const GlobalStyle = createGlobalStyle`
@@ -53,7 +57,7 @@ export const StyledStopwatch = styled.div`
   width: 16rem;
   height: 16rem;
   padding: 2rem;
-  border: solid 0.1rem;
+  /* border: solid 0.1rem; */
   border-radius: 50%;
   display: grid;
   justify-items: center;
@@ -61,12 +65,15 @@ export const StyledStopwatch = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   text-align: center;
+  background-color: ${colors.apps};
+  box-shadow: ${vars.boxShadow};
 `
 
 export const Title = styled.div`
   grid-area: 1 / 1 / 2 / 3;
   font-size: 2rem;
-  font-weight: normal;
+  font-weight: lighter;
+  letter-spacing: 0.5rem;
   color: ${colors.grey};
 `
 
@@ -97,12 +104,13 @@ export const Start = styled.button`
   grid-area: 3 / 1 / 4 / 2;
   font-size: 2rem;
   font-weight: normal;
-  background-color: ${colors.background};
+  background-color: ${colors.apps};
   color: ${colors.green};
   border: none;
+  border-radius: 1rem;
   transition: all 0.175s ease-in-out;
   :hover {
-    font-size: 2.2rem;
+    background-color: ${colors.background};
   }
 `
 
@@ -110,12 +118,13 @@ export const Stop = styled.button`
   grid-area: 3 / 1 / 4 / 2;
   font-size: 2rem;
   font-weight: normal;
-  background-color: ${colors.background};
+  background-color: ${colors.apps};
   color: ${colors.red};
   border: none;
+  border-radius: 1rem;
   transition: all 0.175s ease-in-out;
   :hover {
-    font-size: 2.2rem;
+    background-color: ${colors.background};
   }
 `
 
@@ -123,12 +132,14 @@ export const Clear = styled.button`
   grid-area: 3 / 2 / 4 / 3;
   font-size: 2rem;
   font-weight: normal;
-  background-color: ${colors.background};
+  background-color: ${colors.apps};
   color: ${colors.yellow};
   border: none;
+  border-radius: 1rem;
+  text-decoration: ${props => (props.disabled ? 'line-through' : 'none')};
   transition: all 0.175s ease-in-out;
   :hover {
-    font-size: 2.2rem;
+    background-color: ${colors.background};
   }
 `
 
@@ -138,7 +149,7 @@ export const StyledTimer = styled.div`
   width: 16rem;
   height: 16rem;
   padding: 2rem;
-  border: solid 0.1rem;
+  /* border: solid 0.1rem; */
   border-radius: 50%;
   display: grid;
   justify-items: center;
@@ -146,6 +157,8 @@ export const StyledTimer = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   text-align: center;
+  background-color: ${colors.apps};
+  box-shadow: ${vars.boxShadow};
 `
 
 export const TimerHours = styled.div`
@@ -178,7 +191,7 @@ export const HoursInput = styled.input`
   grid-column: 1 / 2;
   font-size: 3rem;
   text-align: center;
-  border: 0.1rem dotted;
+  border: none;
   background-color: ${colors.background};
   color: ${colors.light};
 `
@@ -188,7 +201,7 @@ export const MinutesInput = styled.input`
   grid-column: 2 / 3;
   font-size: 3rem;
   text-align: center;
-  border: 0.1rem dotted;
+  border: none;
   background-color: ${colors.background};
   color: ${colors.light};
 `
@@ -198,7 +211,7 @@ export const SecondsInput = styled.input`
   grid-column: 3 / 4;
   font-size: 3rem;
   text-align: center;
-  border: 0.1rem dotted;
+  border: none;
   background-color: ${colors.background};
   color: ${colors.light};
 `
@@ -209,13 +222,15 @@ export const StyledBarca = styled.div`
   height: 20rem;
   width: 32rem;
   padding: 0;
-  border: solid 0.1rem;
+  /* border: solid 0.1rem; */
   display: grid;
   justify-items: center;
   align-items: center;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   text-align: center;
+  background-color: ${colors.apps};
+  box-shadow: ${vars.boxShadow};
 `
 
 export const HomeTeam = styled.div`
@@ -233,25 +248,27 @@ export const AwayTeam = styled.div`
 export const Competition = styled.div`
   grid-area: 3 / 1 / 4 / 2;
   font-size: 1.5rem;
-  color: ${colors.blau};
+  color: ${colors.grey};
 `
 
 export const Time = styled.div`
   grid-area: 3 / 2 / 4 / 3;
   font-size: 1.5rem;
-  color: ${colors.blau};
+  color: ${colors.grey};
 `
 
 export const Next = styled.button`
   grid-area: 4 / 2 / 5 / 3;
   font-size: 2rem;
   font-weight: normal;
-  background-color: ${colors.background};
-  color: ${colors.grana};
+  background-color: ${colors.apps};
+  color: ${colors.green};
   border: none;
+  border-radius: 1rem;
+  text-decoration: ${props => (props.disabled ? 'line-through' : 'none')};
   transition: all 0.175s ease-in-out;
   :hover {
-    font-size: 2.2rem;
+    background-color: ${colors.background};
   }
 `
 
@@ -259,12 +276,14 @@ export const Prev = styled.button`
   grid-area: 4 / 1 / 5 / 2;
   font-size: 2rem;
   font-weight: normal;
-  background-color: ${colors.background};
-  color: ${colors.grana};
+  background-color: ${colors.apps};
+  color: ${colors.red};
   border: none;
+  border-radius: 1rem;
+  text-decoration: ${props => (props.disabled ? 'line-through' : 'none')};
   transition: all 0.175s ease-in-out;
   :hover {
-    font-size: 2.2rem;
+    background-color: ${colors.background};
   }
 `
 
@@ -287,20 +306,22 @@ export const StyledMainTasks = styled.div`
   height: 20rem;
   width: 32rem;
   padding: 0;
-  border: solid 0.1rem;
+  /* border: solid 0.1rem; */
   display: grid;
   justify-items: center;
   align-items: center;
   text-align: center;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
+  background-color: ${colors.apps};
+  box-shadow: ${vars.boxShadow};
 `
 
 export const TaskInput = styled.input`
   grid-row: 2 / 3;
   width: 30rem;
   font-size: 2rem;
-  border: 0.1rem dotted;
+  border: none;
   background-color: ${colors.background};
   color: ${colors.light};
 `
@@ -318,13 +339,18 @@ export const Task = styled.div`
   display: grid;
   grid-template-columns: 2rem 1fr;
   align-items: center;
+  border-radius: 1rem;
+  transition: all 0.175s ease-in-out;
+  :hover {
+    background-color: ${colors.background};
+  }
   .icon {
     grid-column: 1 / 2;
-    color: ${colors.grana};
+    font-size: 1.5rem;
+    color: ${colors.green};
     border: none;
-    transition: all 0.175s ease-in-out;
     :hover {
-      font-size: 2.2rem;
+      color: ${colors.red};
     }
   }
 `

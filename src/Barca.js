@@ -73,7 +73,7 @@ class Barca extends Component {
   }
 
   render() {
-    const { matches, index, loading, error } = this.state
+    const { count, matches, index, loading, error } = this.state
     const match = matches[index]
 
     return !loading ? (
@@ -83,8 +83,12 @@ class Barca extends Component {
         <AwayTeam>{match.awayTeam.name}</AwayTeam>
         <Competition>{match.competition.name}</Competition>
         <Time>{this.formatTime(match.utcDate)}</Time>
-        <Prev onClick={this.previousMatch}>prev</Prev>
-        <Next onClick={this.nextMatch}>next</Next>
+        <Prev onClick={this.previousMatch} disabled={index <= 0}>
+          prev
+        </Prev>
+        <Next onClick={this.nextMatch} disabled={index >= count - 1}>
+          next
+        </Next>
       </StyledBarca>
     ) : (
       <Fallback>{!error ? 'loading...' : error}</Fallback>

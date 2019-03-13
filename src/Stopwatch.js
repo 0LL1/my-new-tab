@@ -89,7 +89,9 @@ class Stopwatch extends Component {
         ) : (
           <Stop onClick={this.toggleRunning}>stop</Stop>
         )}
-        <Clear onClick={this.clear}>clear</Clear>
+        <Clear onClick={this.clear} disabled={!time}>
+          clear
+        </Clear>
       </StyledStopwatch>
     )
   }
