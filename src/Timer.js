@@ -2,14 +2,13 @@ import React, { Component } from 'react'
 import {
   StyledTimer,
   Title,
-  TimerInputField,
   HoursInput,
   MinutesInput,
   SecondsInput,
   StyledTime,
-  TimerHours,
-  TimerMinutes,
-  TimerSeconds,
+  LeftTime,
+  MiddleTime,
+  RightTime,
   Start,
   Stop,
   Clear
@@ -99,52 +98,54 @@ class Timer extends Component {
     return (
       <StyledTimer>
         <Title>timer</Title>
-        {running ? (
-          <StyledTime>
-            <TimerHours>{this.zeroPad(hours)}</TimerHours>
-            <TimerMinutes>{this.zeroPad(minutes)}</TimerMinutes>
-            <TimerSeconds>{this.zeroPad(seconds)}</TimerSeconds>
-          </StyledTime>
-        ) : (
-          <TimerInputField>
-            <label>
-              hours
-              <HoursInput
-                onChange={this.setTime}
-                onKeyDown={e => e.key === 'Enter' && this.start()}
-                value={this.zeroPad(hours)}
-                name="hours"
-                type="number"
-                min="0"
-                max="24"
-              />
-            </label>
-            <label>
-              minutes
-              <MinutesInput
-                onChange={this.setTime}
-                onKeyDown={e => e.key === 'Enter' && this.start()}
-                value={this.zeroPad(minutes)}
-                name="minutes"
-                type="number"
-                min="0"
-                max="59"
-              />
-            </label>
-            <label>
-              seconds
-              <SecondsInput
-                onChange={this.setTime}
-                onKeyDown={e => e.key === 'Enter' && this.start()}
-                value={this.zeroPad(seconds)}
-                name="seconds"
-                type="number"
-                min="0"
-                max="59"
-              />
-            </label>
-          </TimerInputField>
-        )}
+        <StyledTime>
+          {running ? (
+            <>
+              <LeftTime>{this.zeroPad(hours)}</LeftTime>
+              <MiddleTime>{this.zeroPad(minutes)}</MiddleTime>
+              <RightTime>{this.zeroPad(seconds)}</RightTime>
+            </>
+          ) : (
+            <>
+              <label>
+                hours
+                <HoursInput
+                  onChange={this.setTime}
+                  onKeyDown={e => e.key === 'Enter' && this.start()}
+                  value={this.zeroPad(hours)}
+                  name="hours"
+                  type="number"
+                  min="0"
+                  max="24"
+                />
+              </label>
+              <label>
+                minutes
+                <MinutesInput
+                  onChange={this.setTime}
+                  onKeyDown={e => e.key === 'Enter' && this.start()}
+                  value={this.zeroPad(minutes)}
+                  name="minutes"
+                  type="number"
+                  min="0"
+                  max="59"
+                />
+              </label>
+              <label>
+                seconds
+                <SecondsInput
+                  onChange={this.setTime}
+                  onKeyDown={e => e.key === 'Enter' && this.start()}
+                  value={this.zeroPad(seconds)}
+                  name="seconds"
+                  type="number"
+                  min="0"
+                  max="59"
+                />
+              </label>
+            </>
+          )}
+        </StyledTime>
         {!running ? (
           <Start onClick={this.toggleRunning}>start</Start>
         ) : (

@@ -9,7 +9,7 @@ import {
   Time,
   Next,
   Prev,
-  Fallback
+  BarcaFallback
 } from './styles'
 
 class Barca extends Component {
@@ -91,7 +91,7 @@ class Barca extends Component {
         </Next>
       </StyledBarca>
     ) : (
-      <Fallback>{!error ? 'loading...' : error}</Fallback>
+      <BarcaFallback>{!error ? 'loading...' : error}</BarcaFallback>
     )
   }
 }

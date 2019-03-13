@@ -49,7 +49,9 @@ class MainTasks extends Component {
   }
 
   render() {
-    const taskList = this.state.tasks.map(task => {
+    const { tasks, input } = this.state
+
+    const taskList = tasks.map(task => {
       return (
         <Task key={task.id}>
           <MdDone className="icon" onClick={() => this.deleteTask(task.id)} />
@@ -62,12 +64,13 @@ class MainTasks extends Component {
       <StyledMainTasks>
         <Title>main tasks of today</Title>
         <label>
-          {this.state.tasks.length >= 3 ? 'no more tasks!' : 'new task'}
+          {tasks.length >= 3 ? 'no more tasks!' : 'new task'}
           <TaskInput
             onChange={this.setTask}
-            onKeyDown={e => e.key === 'Enter' && this.addTask()}
-            value={this.state.input}
-            hidden={this.state.tasks.length >= 3}
+            onKeyDown={e => e.key === 'Enter' && input && this.addTask()}
+            value={input}
+            hidden={tasks.length >= 3}
+            maxLength="50"
           />
         </label>
         <TaskList>{taskList}</TaskList>

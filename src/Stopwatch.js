@@ -3,9 +3,9 @@ import {
   StyledStopwatch,
   Title,
   StyledTime,
-  Minutes,
-  Seconds,
-  Hundreths,
+  LeftTime,
+  MiddleTime,
+  RightTime,
   Start,
   Stop,
   Clear
@@ -80,9 +80,9 @@ class Stopwatch extends Component {
       <StyledStopwatch>
         <Title>stopwatch</Title>
         <StyledTime>
-          <Minutes>{this.minutes(time)}</Minutes>
-          <Seconds>{this.seconds(time)}</Seconds>
-          <Hundreths>{this.hundreths(time)}</Hundreths>
+          <LeftTime>{this.minutes(time)}</LeftTime>
+          <MiddleTime>{this.seconds(time)}</MiddleTime>
+          <RightTime>{this.hundreths(time)}</RightTime>
         </StyledTime>
         {!running ? (
           <Start onClick={this.toggleRunning}>start</Start>
