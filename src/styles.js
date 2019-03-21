@@ -15,6 +15,19 @@ export const GlobalStyle = createGlobalStyle`
   html {
     background-color: ${colors.background};
     font-size: 16px;
+
+    @media(max-width: 1080px) {
+      font-size: 14px;
+    }
+    @media(max-width: 920px) {
+      font-size: 12px;
+    }
+    @media(max-width: 460px) {
+      font-size: 10px;
+    }
+    @media(max-width: 370px) {
+      font-size: 8px;
+    }
   }
   body {
     display: grid;
@@ -40,12 +53,18 @@ export const StyledApp = styled.div`
   align-items: center;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+
+  @media (orientation: portrait) {
+    display: flex;
+    flex-direction: column;
+  }
 `
 
 //main components
 const Rectangular = styled.div`
   height: 20rem;
   width: 32rem;
+  margin: 1rem;
   display: grid;
   justify-items: center;
   align-items: center;
