@@ -51,12 +51,10 @@ export const StyledApp = styled.div`
   height: 100vh;
   justify-items: center;
   align-items: center;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 'MainTasks Stopwatch' 'Barca Timer';
 
-  @media (orientation: portrait) {
-    display: flex;
-    flex-direction: column;
+  @media (max-width: 680px) {
+    grid-template-areas: 'MainTasks' 'Barca' 'Stopwatch' 'Timer';
   }
 `
 
@@ -75,19 +73,19 @@ const Rectangular = styled.div`
 `
 
 export const StyledMainTasks = styled(Rectangular)`
-  grid-area: 1 / 1 / 2 / 2;
+  grid-area: MainTasks;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
 `
 
 export const StyledBarca = styled(Rectangular)`
-  grid-area: 2 / 1 / 3 / 2;
+  grid-area: Barca;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
 `
 
 export const BarcaFallback = styled(Rectangular)`
-  grid-area: 2 / 1 / 3 / 2;
+  grid-area: Barca;
   font-size: 2rem;
 `
 
@@ -101,11 +99,11 @@ const Round = styled(Rectangular)`
 `
 
 export const StyledStopwatch = styled(Round)`
-  grid-area: 1 / 2 / 2 / 3;
+  grid-area: Stopwatch;
 `
 
 export const StyledTimer = styled(Round)`
-  grid-area: 2 / 2 / 3 / 3;
+  grid-area: Timer;
 `
 
 //smaller containers
