@@ -16,7 +16,7 @@ export const GlobalStyle = createGlobalStyle`
     background-color: ${colors.background};
     font-size: 16px;
 
-    @media(max-width: 1080px) {
+    @media(max-width: 1080px), (max-height: 700px) {
       font-size: 14px;
     }
     @media(max-width: 920px) {
@@ -48,7 +48,7 @@ export const GlobalStyle = createGlobalStyle`
 export const StyledApp = styled.div`
   display: grid;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   justify-items: center;
   align-items: center;
   grid-template-areas: 'MainTasks Stopwatch' 'Barca Timer';
