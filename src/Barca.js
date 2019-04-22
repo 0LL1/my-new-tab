@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 import {
   StyledBarca,
@@ -12,88 +12,78 @@ import {
   BarcaFallback
 } from './styles'
 
-class Barca extends Component {
-  state = {
-    count: '',
-    matches: [],
-    index: 0,
-    loading: true,
-    error: false
-  }
+const Barca = () => {
+  const [count, setCount] = useState(0)
+  const [matches, setMatches] = useState([])
+  const [index, setIndex] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
 
-  componentDidMount() {
-    this.getData()
-  }
-
-  getData = () => {
-    fetch(
-      'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
-      {
-        headers: { 'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY }
-      }
-    )
-      .then(response => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          throw new Error()
+  useEffect(() => {
+    const getData = async () => {
+      fetch(
+        'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
+        {
+          headers: {
+            'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY
+          }
         }
-      })
-      .then(data =>
-        this.setState({
-          count: data.count,
-          matches: data.matches,
-          loading: false
-        })
       )
-      .catch(error => {
-        this.setState({ error: 'Error :(' })
-        console.log(error)
-      })
-  }
+        .then(response => {
+          if (response.ok) {
+            return response.json()
+          } else {
+            throw new Error()
+          }
+        })
+        .then(data => {
+          setCount(data.count)
+          setMatches(data.matches)
+          setIsLoading(false)
+        })
+        .catch(error => {
+          setHasError(true)
+          console.log(error)
+        })
+    }
+    getData()
+  }, [])
 
-  nextMatch = () => {
-    if (this.state.count > this.state.index + 1) {
-      this.setState(prevState => {
-        return { index: prevState.index + 1 }
-      })
+  const nextMatch = () => {
+    if (count > index + 1) {
+      setIndex(prevState => prevState + 1)
     } else return
   }
 
-  previousMatch = () => {
-    if (this.state.index > 0) {
-      this.setState(prevState => {
-        return { index: prevState.index - 1 }
-      })
+  const previousMatch = () => {
+    if (index > 0) {
+      setIndex(prevState => prevState - 1)
     } else return
   }
 
-  formatTime = time => {
+  const formatTime = time => {
     return dayjs(time).format('ddd D.M.YYYY HH:mm')
   }
 
-  render() {
-    const { count, matches, index, loading, error } = this.state
-    const match = matches[index]
+  const match = matches[index]
 
-    return !loading ? (
-      <StyledBarca>
-        <Title>scheduled matches</Title>
-        <HomeTeam>{match.homeTeam.name}</HomeTeam>
-        <AwayTeam>{match.awayTeam.name}</AwayTeam>
-        <Competition>{match.competition.name}</Competition>
-        <Time>{this.formatTime(match.utcDate)}</Time>
-        <Prev onClick={this.previousMatch} disabled={index <= 0}>
-          prev
-        </Prev>
-        <Next onClick={this.nextMatch} disabled={index >= count - 1}>
-          next
-        </Next>
-      </StyledBarca>
-    ) : (
-      <BarcaFallback>{!error ? 'loading...' : error}</BarcaFallback>
-    )
-  }
+  return !isLoading ? (
+    <StyledBarca>
+      <Title>scheduled matches</Title>
+      <HomeTeam>{match.homeTeam.name}</HomeTeam>
+      <AwayTeam>{match.awayTeam.name}</AwayTeam>
+      <Competition>{match.competition.name}</Competition>
+      <Time>{formatTime(match.utcDate)}</Time>
+      <Prev onClick={previousMatch} disabled={index <= 0}>
+        prev
+      </Prev>
+      <Next onClick={nextMatch} disabled={index >= count - 1}>
+        next
+      </Next>
+    </StyledBarca>
+  ) : (
+    <BarcaFallback>{!hasError ? 'loading...' : 'error :('}</BarcaFallback>
+  )
 }
 
 export default Barca
