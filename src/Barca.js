@@ -21,30 +21,24 @@ const Barca = () => {
 
   useEffect(() => {
     const getData = async () => {
-      fetch(
-        'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
-        {
-          headers: {
-            'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY
+      try {
+        const response = await fetch(
+          'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
+          {
+            headers: {
+              'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY
+            }
           }
-        }
-      )
-        .then(response => {
-          if (response.ok) {
-            return response.json()
-          } else {
-            throw new Error()
-          }
-        })
-        .then(data => {
-          setCount(data.count)
-          setMatches(data.matches)
-          setIsLoading(false)
-        })
-        .catch(error => {
-          setHasError(true)
-          console.log(error)
-        })
+        )
+        const data = await response.json()
+
+        setCount(data.count)
+        setMatches(data.matches)
+        setIsLoading(false)
+      } catch (error) {
+        setHasError(true)
+        console.log(error)
+      }
     }
     getData()
   }, [])
