@@ -15,6 +15,15 @@ import pop from './assets/pop.mp3'
 const Stopwatch = () => {
   const { time, isRunning, start, stop, clear } = useStopwatch()
 
+  useEffect(() => {
+    const soundInterval = Math.floor(time / 10)
+
+    if (isRunning && !(soundInterval % 1000)) {
+      const sound = new Audio(pop)
+      sound.play()
+    }
+  })
+
   const hundreths = milliseconds => {
     return Math.floor((milliseconds / 10) % 100)
       .toString()
@@ -61,19 +70,11 @@ const useStopwatch = () => {
 
   const intervalRef = useRef()
 
-  const playSound = () => {
-    const sound = new Audio(pop)
-    sound.play()
-  }
-
   useEffect(() => {
     if (isRunning) {
       const startTime = Date.now() - time
       const interval = setInterval(() => {
         setTime(Date.now() - startTime)
-
-        const soundInterval = Math.floor(time / 10)
-        !(soundInterval % 1000) && playSound()
       }, 10)
       intervalRef.current = interval
     }

@@ -28,7 +28,8 @@ const Timer = () => {
     zeroPad,
     start,
     stop,
-    clear
+    clear,
+    secondsRemaining
   } = useTimer()
 
   useEffect(() => {
@@ -39,6 +40,13 @@ const Timer = () => {
     }
     return () => {
       document.title = 'My new tab'
+    }
+  })
+
+  useEffect(() => {
+    if (secondsRemaining <= 0) {
+      const sound = new Audio(alarm)
+      sound.play()
     }
   })
 
@@ -115,6 +123,7 @@ const useTimer = () => {
   const [seconds, setSeconds] = useState('')
 
   const intervalRef = useRef()
+  const secondsRemaining = useRef()
 
   const clear = () => {
     clearInterval(intervalRef.current)
@@ -122,11 +131,6 @@ const useTimer = () => {
     setMinutes('')
     setSeconds('')
     setIsRunning(false)
-  }
-
-  const playAlarm = () => {
-    const sound = new Audio(alarm)
-    sound.play()
   }
 
   const zeroPad = time => {
@@ -139,19 +143,15 @@ const useTimer = () => {
       const calculatedSeconds = hours * 3600 + minutes * 60 + seconds
 
       const interval = setInterval(() => {
-        let secondsRemaining =
+        secondsRemaining.current =
           calculatedSeconds - Math.floor((Date.now() - startTime) / 1000)
 
-        setHours(Math.floor(secondsRemaining / 3600))
-        setMinutes(Math.floor((secondsRemaining / 60) % 60))
-        setSeconds(secondsRemaining % 60)
+        setHours(Math.floor(secondsRemaining.current / 3600))
+        setMinutes(Math.floor((secondsRemaining.current / 60) % 60))
+        setSeconds(secondsRemaining.current % 60)
 
-        if (
-          calculatedSeconds <= 0 ||
-          (hours <= 0 && minutes <= 0 && seconds <= 0)
-        ) {
+        if (secondsRemaining.current <= 0) {
           clear()
-          playAlarm()
         }
       }, 1000)
       intervalRef.current = interval
@@ -177,6 +177,7 @@ const useTimer = () => {
       setIsRunning(false)
       setIsStopped(true)
     },
-    clear
+    clear,
+    secondsRemaining: secondsRemaining.current
   }
 }
