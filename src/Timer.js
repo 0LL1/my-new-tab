@@ -44,11 +44,12 @@ const Timer = () => {
   })
 
   useEffect(() => {
-    if (secondsRemaining <= 0) {
+    if (!isRunning && secondsRemaining <= 0) {
       const sound = new Audio(alarm)
       sound.play()
+      console.log(secondsRemaining)
     }
-  })
+  }, [isRunning, secondsRemaining])
 
   return (
     <StyledTimer>
