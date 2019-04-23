@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   StyledStopwatch,
   Title,
@@ -12,89 +12,83 @@ import {
 } from './styles'
 import pop from './assets/pop.mp3'
 
-class Stopwatch extends Component {
-  state = {
-    time: 0,
-    running: false
-  }
+const Stopwatch = () => {
+  const { time, isRunning, start, stop, clear } = useStopwatch()
 
-  timer = null
-  now = 0
-
-  toggleRunning = () => {
-    !this.state.running ? this.start() : this.stop()
-  }
-
-  start = () => {
-    this.now = Date.now() - this.state.time
-    this.setState({ running: true })
-
-    this.timer = setInterval(() => {
-      this.setState({
-        time: Date.now() - this.now
-      })
-      const soundInterval = Math.floor(this.state.time / 10)
-      !(soundInterval % 1000) && this.playSound()
-    }, 10)
-  }
-
-  stop = () => {
-    clearInterval(this.timer)
-    this.timer = null
-    this.setState({ running: false })
-  }
-
-  clear = () => {
-    this.stop()
-    this.now = 0
-    this.setState({ time: 0 })
-  }
-
-  playSound = () => {
-    const sound = new Audio(pop)
-    sound.play()
-  }
-
-  hundreths = milliseconds => {
+  const hundreths = milliseconds => {
     return Math.floor((milliseconds / 10) % 100)
       .toString()
       .padStart(2, '0')
   }
 
-  seconds = milliseconds => {
+  const seconds = milliseconds => {
     return Math.floor((milliseconds / 1000) % 60)
       .toString()
       .padStart(2, '0')
   }
 
-  minutes = milliseconds => {
+  const minutes = milliseconds => {
     return Math.floor((milliseconds / 60000) % 60)
       .toString()
       .padStart(2, '0')
   }
 
-  render() {
-    const { time, running } = this.state
-
-    return (
-      <StyledStopwatch>
-        <Title>stopwatch</Title>
-        <StyledTime>
-          <LeftTime>{this.minutes(time)}</LeftTime>
-          <MiddleTime>{this.seconds(time)}</MiddleTime>
-          <RightTime>{this.hundreths(time)}</RightTime>
-        </StyledTime>
-        {!running ? (
-          <Start onClick={this.toggleRunning}>start</Start>
-        ) : (
-          <Stop onClick={this.toggleRunning}>stop</Stop>
-        )}
-        <Clear onClick={this.clear} disabled={!time}>
-          clear
-        </Clear>
-      </StyledStopwatch>
-    )
-  }
+  return (
+    <StyledStopwatch>
+      <Title>stopwatch</Title>
+      <StyledTime>
+        <LeftTime>{minutes(time)}</LeftTime>
+        <MiddleTime>{seconds(time)}</MiddleTime>
+        <RightTime>{hundreths(time)}</RightTime>
+      </StyledTime>
+      {!isRunning ? (
+        <Start onClick={start}>start</Start>
+      ) : (
+        <Stop onClick={stop}>stop</Stop>
+      )}
+      <Clear onClick={clear} disabled={false}>
+        clear
+      </Clear>
+    </StyledStopwatch>
+  )
 }
 
 export default Stopwatch
+
+const useStopwatch = () => {
+  const [time, setTime] = useState(0)
+  const [isRunning, setIsRunning] = useState(false)
+
+  const intervalRef = useRef()
+
+  const playSound = () => {
+    const sound = new Audio(pop)
+    sound.play()
+  }
+
+  useEffect(() => {
+    if (isRunning) {
+      const startTime = Date.now() - time
+      const interval = setInterval(() => {
+        setTime(Date.now() - startTime)
+
+        const soundInterval = Math.floor(time / 10)
+        !(soundInterval % 1000) && playSound()
+      }, 10)
+      intervalRef.current = interval
+    }
+    return () => clearInterval(intervalRef.current)
+  })
+
+  return {
+    time,
+    isRunning,
+    start: () => setIsRunning(true),
+    stop: () => setIsRunning(false),
+    clear: () => {
+      clearInterval(intervalRef.current)
+      setTime(0)
+      setIsRunning(false)
+    }
+  }
+}
