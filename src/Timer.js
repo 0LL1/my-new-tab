@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   StyledTimer,
   Title,
@@ -15,148 +15,168 @@ import {
 } from './styles'
 import alarm from './assets/alarm.mp3'
 
-class Timer extends Component {
-  state = {
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    running: false
+const Timer = () => {
+  const {
+    isRunning,
+    isStopped,
+    hours,
+    minutes,
+    seconds,
+    setHours,
+    setMinutes,
+    setSeconds,
+    zeroPad,
+    start,
+    stop,
+    clear
+  } = useTimer()
+
+  useEffect(() => {
+    if (isRunning) {
+      document.title = `${zeroPad(hours)}:${zeroPad(minutes)}:${zeroPad(
+        seconds
+      )}`
+    }
+    return () => {
+      document.title = 'My new tab'
+    }
+  })
+
+  return (
+    <StyledTimer>
+      <Title>timer</Title>
+      <StyledTime>
+        {isRunning || isStopped ? (
+          <>
+            <LeftTime>{zeroPad(hours)}</LeftTime>
+            <MiddleTime>{zeroPad(minutes)}</MiddleTime>
+            <RightTime>{zeroPad(seconds)}</RightTime>
+          </>
+        ) : (
+          <>
+            <label>
+              hours
+              <HoursInput
+                onChange={e => setHours(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && start()}
+                value={hours}
+                name="hours"
+                type="number"
+                min="0"
+                max="24"
+              />
+            </label>
+            <label>
+              minutes
+              <MinutesInput
+                onChange={e => setMinutes(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && start()}
+                value={minutes}
+                name="minutes"
+                type="number"
+                min="0"
+                max="59"
+              />
+            </label>
+            <label>
+              seconds
+              <SecondsInput
+                onChange={e => setSeconds(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && start()}
+                value={seconds}
+                name="seconds"
+                type="number"
+                min="0"
+                max="59"
+              />
+            </label>
+          </>
+        )}
+      </StyledTime>
+      {!isRunning ? (
+        <Start onClick={start}>start</Start>
+      ) : (
+        <Stop onClick={stop}>stop</Stop>
+      )}
+      <Clear onClick={clear} disabled={!(hours + minutes + seconds)}>
+        clear
+      </Clear>
+    </StyledTimer>
+  )
+}
+
+export default Timer
+
+const useTimer = () => {
+  const [isRunning, setIsRunning] = useState(false)
+  const [isStopped, setIsStopped] = useState(false)
+  const [hours, setHours] = useState('')
+  const [minutes, setMinutes] = useState('')
+  const [seconds, setSeconds] = useState('')
+
+  const intervalRef = useRef()
+
+  const clear = () => {
+    clearInterval(intervalRef.current)
+    setHours('')
+    setMinutes('')
+    setSeconds('')
+    setIsRunning(false)
   }
 
-  timer = null
-  now = 0
-
-  setTime = event => {
-    this.setState({
-      [event.target.name]: parseInt(event.target.value)
-    })
-  }
-
-  toggleRunning = () => {
-    !this.state.running ? this.start() : this.stop()
-  }
-
-  start = () => {
-    this.setState({ running: true })
-
-    this.now = Date.now()
-
-    const calculatedSeconds =
-      this.state.hours * 3600 + this.state.minutes * 60 + this.state.seconds
-
-    this.timer = setInterval(() => {
-      let secondsRemaining =
-        calculatedSeconds - Math.floor((Date.now() - this.now) / 1000)
-
-      this.setState({
-        hours: Math.floor(secondsRemaining / 3600),
-        minutes: Math.floor((secondsRemaining / 60) % 60),
-        seconds: secondsRemaining % 60
-      })
-
-      document.title = `${this.zeroPad(this.state.hours)}:${this.zeroPad(
-        this.state.minutes
-      )}:${this.zeroPad(this.state.seconds)}`
-
-      if (
-        calculatedSeconds <= 0 ||
-        (this.state.hours <= 0 &&
-          this.state.minutes <= 0 &&
-          this.state.seconds <= 0)
-      ) {
-        this.clear()
-        this.playAlarm()
-      }
-    }, 1000)
-  }
-
-  stop = () => {
-    clearInterval(this.timer)
-    this.timer = null
-    this.setState({ running: false })
-  }
-
-  clear = () => {
-    this.stop()
-    this.now = 0
-    this.setState({ hours: 0, minutes: 0, seconds: 0 })
-    document.title = 'My New Tab'
-  }
-
-  playAlarm = () => {
+  const playAlarm = () => {
     const sound = new Audio(alarm)
     sound.play()
   }
 
-  zeroPad = time => {
+  const zeroPad = time => {
     return time.toString().padStart(2, '0')
   }
 
-  render() {
-    const { hours, minutes, seconds, running } = this.state
+  useEffect(() => {
+    if (isRunning) {
+      const startTime = Date.now()
+      const calculatedSeconds = hours * 3600 + minutes * 60 + seconds
 
-    return (
-      <StyledTimer>
-        <Title>timer</Title>
-        <StyledTime>
-          {running ? (
-            <>
-              <LeftTime>{this.zeroPad(hours)}</LeftTime>
-              <MiddleTime>{this.zeroPad(minutes)}</MiddleTime>
-              <RightTime>{this.zeroPad(seconds)}</RightTime>
-            </>
-          ) : (
-            <>
-              <label>
-                hours
-                <HoursInput
-                  onChange={this.setTime}
-                  onKeyDown={e => e.key === 'Enter' && this.start()}
-                  value={this.zeroPad(hours)}
-                  name="hours"
-                  type="number"
-                  min="0"
-                  max="24"
-                />
-              </label>
-              <label>
-                minutes
-                <MinutesInput
-                  onChange={this.setTime}
-                  onKeyDown={e => e.key === 'Enter' && this.start()}
-                  value={this.zeroPad(minutes)}
-                  name="minutes"
-                  type="number"
-                  min="0"
-                  max="59"
-                />
-              </label>
-              <label>
-                seconds
-                <SecondsInput
-                  onChange={this.setTime}
-                  onKeyDown={e => e.key === 'Enter' && this.start()}
-                  value={this.zeroPad(seconds)}
-                  name="seconds"
-                  type="number"
-                  min="0"
-                  max="59"
-                />
-              </label>
-            </>
-          )}
-        </StyledTime>
-        {!running ? (
-          <Start onClick={this.toggleRunning}>start</Start>
-        ) : (
-          <Stop onClick={this.toggleRunning}>stop</Stop>
-        )}
-        <Clear onClick={this.clear} disabled={!(hours + minutes + seconds)}>
-          clear
-        </Clear>
-      </StyledTimer>
-    )
+      const interval = setInterval(() => {
+        let secondsRemaining =
+          calculatedSeconds - Math.floor((Date.now() - startTime) / 1000)
+
+        setHours(Math.floor(secondsRemaining / 3600))
+        setMinutes(Math.floor((secondsRemaining / 60) % 60))
+        setSeconds(secondsRemaining % 60)
+
+        if (
+          calculatedSeconds <= 0 ||
+          (hours <= 0 && minutes <= 0 && seconds <= 0)
+        ) {
+          clear()
+          playAlarm()
+        }
+      }, 1000)
+      intervalRef.current = interval
+    }
+    return () => clearInterval(intervalRef.current)
+  })
+
+  return {
+    isRunning,
+    isStopped,
+    hours,
+    minutes,
+    seconds,
+    setHours,
+    setMinutes,
+    setSeconds,
+    zeroPad,
+    start: () => {
+      setIsRunning(true)
+      setIsStopped(false)
+    },
+    stop: () => {
+      setIsRunning(false)
+      setIsStopped(true)
+    },
+    clear
   }
 }
-
-export default Timer
