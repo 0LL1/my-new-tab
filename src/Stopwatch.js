@@ -55,7 +55,7 @@ const Stopwatch = () => {
       ) : (
         <Stop onClick={stop}>stop</Stop>
       )}
-      <Clear onClick={clear} disabled={false}>
+      <Clear onClick={clear} disabled={!time}>
         clear
       </Clear>
     </StyledStopwatch>

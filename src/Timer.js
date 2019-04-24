@@ -103,7 +103,9 @@ const Timer = () => {
         )}
       </StyledTime>
       {!isRunning ? (
-        <Start onClick={start}>start</Start>
+        <Start onClick={start} disabled={!(hours + minutes + seconds)}>
+          start
+        </Start>
       ) : (
         <Stop onClick={stop}>stop</Stop>
       )}
