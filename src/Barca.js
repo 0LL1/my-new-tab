@@ -17,7 +17,7 @@ const Barca = () => {
   const [matches, setMatches] = useState([])
   const [index, setIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
-  const [hasError, setHasError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     const getData = async () => {
@@ -32,16 +32,24 @@ const Barca = () => {
         )
         const data = await response.json()
 
+        if (data.count === 0) {
+          throw new Error('no scheduled matches')
+        }
+
         setCount(data.count)
         setMatches(data.matches)
         setIsLoading(false)
       } catch (error) {
-        setHasError(true)
-        console.log(error)
+        if (error.message === 'no scheduled matches') {
+          setErrorMessage('no scheduled matches :(')
+        } else {
+          setErrorMessage('error :(')
+          console.log(error)
+        }
       }
     }
     getData()
-  }, [])
+  }, [errorMessage])
 
   const nextMatch = () => {
     if (count > index + 1) {
@@ -76,7 +84,7 @@ const Barca = () => {
       </Next>
     </StyledBarca>
   ) : (
-    <BarcaFallback>{!hasError ? 'loading...' : 'error :('}</BarcaFallback>
+    <BarcaFallback>{!errorMessage ? 'loading...' : errorMessage}</BarcaFallback>
   )
 }
 
