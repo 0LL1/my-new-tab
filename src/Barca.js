@@ -13,7 +13,6 @@ import {
 } from './styles'
 
 const Barca = () => {
-  const [count, setCount] = useState(0)
   const [matches, setMatches] = useState([])
   const [index, setIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
@@ -23,7 +22,7 @@ const Barca = () => {
     const getData = async () => {
       try {
         const response = await fetch(
-          'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
+          'https://api.football-data.org/v2/teams/64/matches?status=SCHEDULED',
           {
             headers: {
               'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY
@@ -32,11 +31,10 @@ const Barca = () => {
         )
         const data = await response.json()
 
-        if (data.count === 0) {
+        if (data.matches.length <= 0) {
           throw new Error('no scheduled matches')
         }
 
-        setCount(data.count)
         setMatches(data.matches)
         setIsLoading(false)
       } catch (error) {
@@ -52,7 +50,7 @@ const Barca = () => {
   }, [errorMessage])
 
   const nextMatch = () => {
-    if (count > index + 1) {
+    if (matches.length > index + 1) {
       setIndex(prevState => prevState + 1)
     } else return
   }
@@ -79,7 +77,7 @@ const Barca = () => {
       <Prev onClick={previousMatch} disabled={index <= 0}>
         prev
       </Prev>
-      <Next onClick={nextMatch} disabled={index >= count - 1}>
+      <Next onClick={nextMatch} disabled={index >= matches.length - 1}>
         next
       </Next>
     </StyledBarca>
