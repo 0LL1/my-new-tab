@@ -22,7 +22,7 @@ const Barca = () => {
     const getData = async () => {
       try {
         const response = await fetch(
-          'https://api.football-data.org/v2/teams/64/matches?status=SCHEDULED',
+          'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
           {
             headers: {
               'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY
