@@ -65,6 +65,7 @@ const Stopwatch = () => {
 export default Stopwatch
 
 const useStopwatch = () => {
+  const [startTime, setStartTime] = useState(0)
   const [time, setTime] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
 
@@ -72,24 +73,32 @@ const useStopwatch = () => {
 
   useEffect(() => {
     if (isRunning) {
-      const startTime = Date.now() - time
       const interval = setInterval(() => {
         setTime(Date.now() - startTime)
       }, 10)
       intervalRef.current = interval
     }
     return () => clearInterval(intervalRef.current)
-  })
+  }, [isRunning, startTime, time])
+
+  const start = () => {
+    setStartTime(Date.now() - time)
+    setIsRunning(true)
+  }
+
+  const stop = () => setIsRunning(false)
+
+  const clear = () => {
+    setIsRunning(false)
+    setTime(0)
+    clearInterval(intervalRef.current)
+  }
 
   return {
     time,
     isRunning,
-    start: () => setIsRunning(true),
-    stop: () => setIsRunning(false),
-    clear: () => {
-      clearInterval(intervalRef.current)
-      setTime(0)
-      setIsRunning(false)
-    }
+    start,
+    stop,
+    clear
   }
 }
