@@ -18,18 +18,16 @@ import alarm from './assets/alarm.mp3'
 const Timer = () => {
   const {
     isRunning,
-    isStopped,
     hours,
     minutes,
     seconds,
     setHours,
     setMinutes,
     setSeconds,
-    zeroPad,
     start,
     stop,
     clear,
-    secondsRemaining
+    zeroPad
   } = useTimer()
 
   useEffect(() => {
@@ -43,19 +41,11 @@ const Timer = () => {
     }
   })
 
-  useEffect(() => {
-    if (!isRunning && secondsRemaining <= 0) {
-      const sound = new Audio(alarm)
-      sound.play()
-      console.log(secondsRemaining)
-    }
-  }, [isRunning, secondsRemaining])
-
   return (
     <StyledTimer>
       <Title>timer</Title>
       <StyledTime>
-        {isRunning || isStopped ? (
+        {isRunning ? (
           <>
             <LeftTime>{zeroPad(hours)}</LeftTime>
             <MiddleTime>{zeroPad(minutes)}</MiddleTime>
@@ -66,7 +56,7 @@ const Timer = () => {
             <label>
               hours
               <HoursInput
-                onChange={e => setHours(e.target.value)}
+                onChange={e => setHours(parseInt(e.target.value))}
                 onKeyDown={e => e.key === 'Enter' && start()}
                 value={hours}
                 name="hours"
@@ -78,7 +68,7 @@ const Timer = () => {
             <label>
               minutes
               <MinutesInput
-                onChange={e => setMinutes(e.target.value)}
+                onChange={e => setMinutes(parseInt(e.target.value))}
                 onKeyDown={e => e.key === 'Enter' && start()}
                 value={minutes}
                 name="minutes"
@@ -90,7 +80,7 @@ const Timer = () => {
             <label>
               seconds
               <SecondsInput
-                onChange={e => setSeconds(e.target.value)}
+                onChange={e => setSeconds(parseInt(e.target.value))}
                 onKeyDown={e => e.key === 'Enter' && start()}
                 value={seconds}
                 name="seconds"
@@ -120,13 +110,52 @@ export default Timer
 
 const useTimer = () => {
   const [isRunning, setIsRunning] = useState(false)
-  const [isStopped, setIsStopped] = useState(false)
+  const [startTime, setStartTime] = useState(0)
   const [hours, setHours] = useState('')
   const [minutes, setMinutes] = useState('')
   const [seconds, setSeconds] = useState('')
+  const [startSeconds, setStartSeconds] = useState(0)
 
   const intervalRef = useRef()
-  const secondsRemaining = useRef()
+
+  useEffect(() => {
+    if (isRunning) {
+      const interval = setInterval(() => {
+        const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000)
+        const secondsRemaining = startSeconds - elapsedSeconds
+
+        setHours(Math.floor(secondsRemaining / 3600))
+        setMinutes(Math.floor((secondsRemaining / 60) % 60))
+        setSeconds(secondsRemaining % 60)
+
+        if (secondsRemaining <= 0) {
+          clear()
+          const sound = new Audio(alarm)
+          sound.play()
+        }
+      }, 1000)
+      intervalRef.current = interval
+    }
+    return () => clearInterval(intervalRef.current)
+  })
+
+  const start = () => {
+    setStartTime(Date.now())
+    setIsRunning(true)
+
+    const startHours = hours || 0
+    const startMinutes = minutes || 0
+    const startSeconds = seconds || 0
+
+    const calculatedSeconds =
+      startHours * 3600 + startMinutes * 60 + startSeconds
+
+    setStartSeconds(calculatedSeconds)
+  }
+
+  const stop = () => {
+    setIsRunning(false)
+  }
 
   const clear = () => {
     clearInterval(intervalRef.current)
@@ -140,47 +169,17 @@ const useTimer = () => {
     return time.toString().padStart(2, '0')
   }
 
-  useEffect(() => {
-    if (isRunning) {
-      const startTime = Date.now()
-      const calculatedSeconds = hours * 3600 + minutes * 60 + seconds
-
-      const interval = setInterval(() => {
-        secondsRemaining.current =
-          calculatedSeconds - Math.floor((Date.now() - startTime) / 1000)
-
-        setHours(Math.floor(secondsRemaining.current / 3600))
-        setMinutes(Math.floor((secondsRemaining.current / 60) % 60))
-        setSeconds(secondsRemaining.current % 60)
-
-        if (secondsRemaining.current <= 0) {
-          clear()
-        }
-      }, 1000)
-      intervalRef.current = interval
-    }
-    return () => clearInterval(intervalRef.current)
-  })
-
   return {
     isRunning,
-    isStopped,
     hours,
     minutes,
     seconds,
     setHours,
     setMinutes,
     setSeconds,
-    zeroPad,
-    start: () => {
-      setIsRunning(true)
-      setIsStopped(false)
-    },
-    stop: () => {
-      setIsRunning(false)
-      setIsStopped(true)
-    },
+    start,
+    stop,
     clear,
-    secondsRemaining: secondsRemaining.current
+    zeroPad
   }
 }
