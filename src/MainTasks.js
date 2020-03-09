@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import { MdDone } from 'react-icons/md'
 import { StyledMainTasks, Title, TaskInput, TaskList, Task } from './styles'
 
 const MainTasks = () => {
-  const initialTasks = () => JSON.parse(localStorage.getItem('tasks')) || []
+  const initialTasks = JSON.parse(localStorage.getItem('tasks'))
   const [tasks, setTasks] = useState(initialTasks)
   const [input, setInput] = useState('')
+
+  window.addEventListener('storage', () => {
+    setTasks(JSON.parse(localStorage.getItem('tasks')))
+  })
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks))
