@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyledTimer,
   Title,
@@ -11,9 +11,9 @@ import {
   RightTime,
   Start,
   Stop,
-  Clear
-} from './styles'
-import alarm from './assets/alarm.mp3'
+  Clear,
+} from "./styles";
+import alarm from "./assets/alarm.mp3";
 
 const Timer = () => {
   const {
@@ -27,19 +27,19 @@ const Timer = () => {
     start,
     stop,
     clear,
-    zeroPad
-  } = useTimer()
+    zeroPad,
+  } = useTimer();
 
   useEffect(() => {
     if (isRunning) {
       document.title = `${zeroPad(hours)}:${zeroPad(minutes)}:${zeroPad(
         seconds
-      )}`
+      )}`;
     }
     return () => {
-      document.title = 'My new tab'
-    }
-  })
+      document.title = "My new tab";
+    };
+  });
 
   return (
     <StyledTimer>
@@ -56,8 +56,8 @@ const Timer = () => {
             <label>
               hours
               <HoursInput
-                onChange={e => setHours(parseInt(e.target.value))}
-                onKeyDown={e => e.key === 'Enter' && start()}
+                onChange={(e) => setHours(parseInt(e.target.value))}
+                onKeyDown={(e) => e.key === "Enter" && start()}
                 value={hours}
                 name="hours"
                 type="number"
@@ -68,8 +68,8 @@ const Timer = () => {
             <label>
               minutes
               <MinutesInput
-                onChange={e => setMinutes(parseInt(e.target.value))}
-                onKeyDown={e => e.key === 'Enter' && start()}
+                onChange={(e) => setMinutes(parseInt(e.target.value))}
+                onKeyDown={(e) => e.key === "Enter" && start()}
                 value={minutes}
                 name="minutes"
                 type="number"
@@ -80,8 +80,8 @@ const Timer = () => {
             <label>
               seconds
               <SecondsInput
-                onChange={e => setSeconds(parseInt(e.target.value))}
-                onKeyDown={e => e.key === 'Enter' && start()}
+                onChange={(e) => setSeconds(parseInt(e.target.value))}
+                onKeyDown={(e) => e.key === "Enter" && start()}
                 value={seconds}
                 name="seconds"
                 type="number"
@@ -103,71 +103,71 @@ const Timer = () => {
         clear
       </Clear>
     </StyledTimer>
-  )
-}
+  );
+};
 
-export default Timer
+export default Timer;
 
 const useTimer = () => {
-  const [isRunning, setIsRunning] = useState(false)
-  const [startTime, setStartTime] = useState(0)
-  const [hours, setHours] = useState('')
-  const [minutes, setMinutes] = useState('')
-  const [seconds, setSeconds] = useState('')
-  const [startSeconds, setStartSeconds] = useState(0)
+  const [isRunning, setIsRunning] = useState(false);
+  const [startTime, setStartTime] = useState(0);
+  const [hours, setHours] = useState("");
+  const [minutes, setMinutes] = useState("");
+  const [seconds, setSeconds] = useState("");
+  const [startSeconds, setStartSeconds] = useState(0);
 
-  const intervalRef = useRef()
+  const intervalRef = useRef();
 
   useEffect(() => {
     if (isRunning) {
       const interval = setInterval(() => {
-        const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000)
-        const secondsRemaining = startSeconds - elapsedSeconds
+        const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+        const secondsRemaining = startSeconds - elapsedSeconds;
 
-        setHours(Math.floor(secondsRemaining / 3600))
-        setMinutes(Math.floor((secondsRemaining / 60) % 60))
-        setSeconds(secondsRemaining % 60)
+        setHours(Math.floor(secondsRemaining / 3600));
+        setMinutes(Math.floor((secondsRemaining / 60) % 60));
+        setSeconds(secondsRemaining % 60);
 
         if (secondsRemaining <= 0) {
-          clear()
-          const sound = new Audio(alarm)
-          sound.play()
+          clear();
+          const sound = new Audio(alarm);
+          sound.play();
         }
-      }, 1000)
-      intervalRef.current = interval
+      }, 1000);
+      intervalRef.current = interval;
     }
-    return () => clearInterval(intervalRef.current)
-  })
+    return () => clearInterval(intervalRef.current);
+  });
 
   const start = () => {
-    setStartTime(Date.now())
-    setIsRunning(true)
+    setStartTime(Date.now());
+    setIsRunning(true);
 
-    const startHours = hours || 0
-    const startMinutes = minutes || 0
-    const startSeconds = seconds || 0
+    const startHours = hours || 0;
+    const startMinutes = minutes || 0;
+    const startSeconds = seconds || 0;
 
     const calculatedSeconds =
-      startHours * 3600 + startMinutes * 60 + startSeconds
+      startHours * 3600 + startMinutes * 60 + startSeconds;
 
-    setStartSeconds(calculatedSeconds)
-  }
+    setStartSeconds(calculatedSeconds);
+  };
 
   const stop = () => {
-    setIsRunning(false)
-  }
+    setIsRunning(false);
+  };
 
   const clear = () => {
-    clearInterval(intervalRef.current)
-    setHours('')
-    setMinutes('')
-    setSeconds('')
-    setIsRunning(false)
-  }
+    clearInterval(intervalRef.current);
+    setHours("");
+    setMinutes("");
+    setSeconds("");
+    setIsRunning(false);
+  };
 
-  const zeroPad = time => {
-    return time.toString().padStart(2, '0')
-  }
+  const zeroPad = (time) => {
+    return time.toString().padStart(2, "0");
+  };
 
   return {
     isRunning,
@@ -180,6 +180,6 @@ const useTimer = () => {
     start,
     stop,
     clear,
-    zeroPad
-  }
-}
+    zeroPad,
+  };
+};

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyledStopwatch,
   Title,
@@ -8,39 +8,39 @@ import {
   RightTime,
   Start,
   Stop,
-  Clear
-} from './styles'
-import pop from './assets/pop.mp3'
+  Clear,
+} from "./styles";
+import pop from "./assets/pop.mp3";
 
 const Stopwatch = () => {
-  const { time, isRunning, start, stop, clear } = useStopwatch()
+  const { time, isRunning, start, stop, clear } = useStopwatch();
 
   useEffect(() => {
-    const soundInterval = Math.floor(time / 10)
+    const soundInterval = Math.floor(time / 10);
 
     if (isRunning && !(soundInterval % 1000)) {
-      const sound = new Audio(pop)
-      sound.play()
+      const sound = new Audio(pop);
+      sound.play();
     }
-  })
+  });
 
-  const hundreths = milliseconds => {
+  const hundreths = (milliseconds) => {
     return Math.floor((milliseconds / 10) % 100)
       .toString()
-      .padStart(2, '0')
-  }
+      .padStart(2, "0");
+  };
 
-  const seconds = milliseconds => {
+  const seconds = (milliseconds) => {
     return Math.floor((milliseconds / 1000) % 60)
       .toString()
-      .padStart(2, '0')
-  }
+      .padStart(2, "0");
+  };
 
-  const minutes = milliseconds => {
+  const minutes = (milliseconds) => {
     return Math.floor((milliseconds / 60000) % 60)
       .toString()
-      .padStart(2, '0')
-  }
+      .padStart(2, "0");
+  };
 
   return (
     <StyledStopwatch>
@@ -59,46 +59,46 @@ const Stopwatch = () => {
         clear
       </Clear>
     </StyledStopwatch>
-  )
-}
+  );
+};
 
-export default Stopwatch
+export default Stopwatch;
 
 const useStopwatch = () => {
-  const [startTime, setStartTime] = useState(0)
-  const [time, setTime] = useState(0)
-  const [isRunning, setIsRunning] = useState(false)
+  const [startTime, setStartTime] = useState(0);
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
 
-  const intervalRef = useRef()
+  const intervalRef = useRef();
 
   useEffect(() => {
     if (isRunning) {
       const interval = setInterval(() => {
-        setTime(Date.now() - startTime)
-      }, 10)
-      intervalRef.current = interval
+        setTime(Date.now() - startTime);
+      }, 10);
+      intervalRef.current = interval;
     }
-    return () => clearInterval(intervalRef.current)
-  }, [isRunning, startTime, time])
+    return () => clearInterval(intervalRef.current);
+  }, [isRunning, startTime, time]);
 
   const start = () => {
-    setStartTime(Date.now() - time)
-    setIsRunning(true)
-  }
+    setStartTime(Date.now() - time);
+    setIsRunning(true);
+  };
 
-  const stop = () => setIsRunning(false)
+  const stop = () => setIsRunning(false);
 
   const clear = () => {
-    setIsRunning(false)
-    setTime(0)
-    clearInterval(intervalRef.current)
-  }
+    setIsRunning(false);
+    setTime(0);
+    clearInterval(intervalRef.current);
+  };
 
   return {
     time,
     isRunning,
     start,
     stop,
-    clear
-  }
-}
+    clear,
+  };
+};

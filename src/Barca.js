@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import dayjs from 'dayjs'
+import React, { useState, useEffect } from "react";
+import dayjs from "dayjs";
 import {
   StyledBarca,
   Title,
@@ -9,63 +9,63 @@ import {
   Time,
   Next,
   Prev,
-  BarcaFallback
-} from './styles'
+  BarcaFallback,
+} from "./styles";
 
 const Barca = () => {
-  const [matches, setMatches] = useState([])
-  const [index, setIndex] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [matches, setMatches] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const getData = async () => {
       try {
         const response = await fetch(
-          'https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED',
+          "https://api.football-data.org/v2/teams/81/matches?status=SCHEDULED",
           {
             headers: {
-              'X-Auth-Token': process.env.REACT_APP_FOOTBALLDATA_API_KEY
-            }
+              "X-Auth-Token": process.env.REACT_APP_FOOTBALLDATA_API_KEY,
+            },
           }
-        )
-        const data = await response.json()
+        );
+        const data = await response.json();
 
         if (data.matches.length <= 0) {
-          throw new Error('no scheduled matches')
+          throw new Error("no scheduled matches");
         }
 
-        setMatches(data.matches)
-        setIsLoading(false)
+        setMatches(data.matches);
+        setIsLoading(false);
       } catch (error) {
-        if (error.message === 'no scheduled matches') {
-          setErrorMessage('no scheduled matches :(')
+        if (error.message === "no scheduled matches") {
+          setErrorMessage("no scheduled matches :(");
         } else {
-          setErrorMessage('error :(')
-          console.log(error)
+          setErrorMessage("error :(");
+          console.log(error);
         }
       }
-    }
-    getData()
-  }, [errorMessage])
+    };
+    getData();
+  }, [errorMessage]);
 
   const nextMatch = () => {
     if (matches.length > index + 1) {
-      setIndex(prevState => prevState + 1)
-    } else return
-  }
+      setIndex((prevState) => prevState + 1);
+    } else return;
+  };
 
   const previousMatch = () => {
     if (index > 0) {
-      setIndex(prevState => prevState - 1)
-    } else return
-  }
+      setIndex((prevState) => prevState - 1);
+    } else return;
+  };
 
-  const formatTime = time => {
-    return dayjs(time).format('ddd D.M.YYYY HH:mm')
-  }
+  const formatTime = (time) => {
+    return dayjs(time).format("ddd D.M.YYYY HH:mm");
+  };
 
-  const match = matches[index]
+  const match = matches[index];
 
   return !isLoading ? (
     <StyledBarca>
@@ -82,8 +82,8 @@ const Barca = () => {
       </Next>
     </StyledBarca>
   ) : (
-    <BarcaFallback>{!errorMessage ? 'loading...' : errorMessage}</BarcaFallback>
-  )
-}
+    <BarcaFallback>{!errorMessage ? "loading..." : errorMessage}</BarcaFallback>
+  );
+};
 
-export default Barca
+export default Barca;
