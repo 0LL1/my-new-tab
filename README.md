@@ -9,4 +9,4 @@ My new tab is a Chrome extension that replaces the default new tab page. It's ta
 
 Color scheme is based on Chrome's new dark mode and macOS's native colors. Layout was designed to fit my 13" Retina display and bigger.
 
-[Live demo](https://mynewtab.netlify.com/)
+[Live demo](https://mynewtab.netlify.app/)
